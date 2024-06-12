@@ -25,8 +25,9 @@ ts_gcm_dhist=ts_gcm_dhist(2:end-1);ts_gcm_dssp245=ts_gcm_dssp245(2:end-1);
 smoothwndw=20;
 for iperiod =1:nperiod
     SW(:,iperiod)=interp1(lat0,seasonlonavg(SW1(:,:,12*(stryr(iperiod)-filestryr)+1:12*(endyr(iperiod)+1-filestryr)),m1,m2),lat);
+    hs(:,iperiod)=interp1(lat0,seasonlonavg(hs1(:,:,12*(stryr(iperiod)-filestryr)+1:12*(endyr(iperiod)+1-filestryr)),m1,m2),lat);
 end
-clear SW1
+clear SW1,hs1
 if ifdbk<2
     deltaT=ts_gcm_dhist';
     SW(:,2)=SW(:,1)+Force_dhist(2:end-1)';%SW(:,1)=0;
@@ -34,7 +35,6 @@ else
     deltaT=ts_gcm_dssp245';
     SW(:,2)=SW(:,1)+Force_dssp245(2:end-1)';%SW(:,1)=0;
 end
-iperiod=1;hs(:,1)=interp1(lat0,seasonlonavg(hs1(:,:,12*(stryr(iperiod)-filestryr)+1:12*(endyr(iperiod)+1-filestryr)),m1,m2),lat);hs(:,2)=hs(:,1);%no change in surface relative humidity
 To0(1)=areaavg_lat(ts_gcm_hist(2:end-1),lat,-91);To0(2)=To0(1);
 tmpp=ncread(append(dir,file2),"sp");
 PS(:,1)=interp1(lat0,seasonlonavg(tmpp(:,:,12*(stryr(iperiod)-filestryr)+1:12*(endyr(iperiod)+1-filestryr)),m1,m2),lat);PS(:,2)=PS(:,1);%no change in surface pressure
@@ -137,7 +137,7 @@ set(gca,'fontname','times','fontsize',fntsz*1.5);hold off
 %%%%%%% starting the energy balance model
 %%%%%Do shape and b decides coverge or not (smaller Do smooth window needs smaller b), Bp decides the shape of T curve
 To_0=zeros(lat_number,nperiod)+NaN;
-if ifdbk<2;bvalue=-67;else;bvalue=-235.3;end
+bvalue=-235.3;
 b=zeros(lat_number,nperiod)+bvalue;
 for iperiod =1:nperiod
     To=To0(iperiod)*ones(lat_number,1);  % initial condition for temperature            
@@ -190,4 +190,3 @@ legend boxoff ;
 ylabel("\Delta SAT (K)",'fontsize',fntsz);
 set(gca,'XMinorTick','on','YMinorTick','on')
 set(gca,'fontname','times');hold off
-tmp0=To_0(:,2)-To_0(:,1);
