@@ -15,7 +15,7 @@ else
     season=seasons(m1:m2);ssn=2;
 end
 ifdbk=2;%%% which period of feedbacks and forcing to use; 1 for hist; 2 for ssp245
-stryr=[1950,1970];endyr=[2014,2014];filestryr=1940;if ifdbk>1;stryr[2]=1980;
+stryr=[1950,1970];endyr=[2014,2014];filestryr=1940;
 nperiod=2;
 SW1   =  ncread(append(dir,file2),"mtnswrf")-ncread(append(dir,file2),"msnswrf")-ncread(append(dir,file2),"msnlwrf")-ncread(append(dir,file2),"mslhf")-ncread(append(dir,file2),"msshf");
 Tr=ncread(append(dir,file1),"t2m");
