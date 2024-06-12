@@ -23,11 +23,10 @@ etmp=WVPressure(ncread(append(dir,file2),"d2m"));
 hs1=etmp./WVPressure(Tr);
 ts_gcm_dhist=ts_gcm_dhist(2:end-1);ts_gcm_dssp245=ts_gcm_dssp245(2:end-1);
 smoothwndw=20;
-for iperiod =1:nperiod
-    SW(:,iperiod)=interp1(lat0,seasonlonavg(SW1(:,:,12*(stryr(iperiod)-filestryr)+1:12*(endyr(iperiod)+1-filestryr)),m1,m2),lat);
-    hs(:,iperiod)=interp1(lat0,seasonlonavg(hs1(:,:,12*(stryr(iperiod)-filestryr)+1:12*(endyr(iperiod)+1-filestryr)),m1,m2),lat);
-end
+SW(:,1)=interp1(lat0,seasonlonavg(SW1(:,:,12*(stryr(1)-filestryr)+1:12*(endyr(1)+1-filestryr)),m1,m2),lat);
+hs(:,1)=interp1(lat0,seasonlonavg(hs1(:,:,12*(stryr(1)-filestryr)+1:12*(endyr(1)+1-filestryr)),m1,m2),lat);
 clear SW1,hs1
+hs(:,2)=hs(:,1);%%no change in relative humidity
 if ifdbk<2
     deltaT=ts_gcm_dhist';
     SW(:,2)=SW(:,1)+Force_dhist(2:end-1)';%SW(:,1)=0;
@@ -37,8 +36,8 @@ else
 end
 To0(1)=areaavg_lat(ts_gcm_hist(2:end-1),lat,-91);To0(2)=To0(1);
 tmpp=ncread(append(dir,file2),"sp");
-PS(:,1)=interp1(lat0,seasonlonavg(tmpp(:,:,12*(stryr(iperiod)-filestryr)+1:12*(endyr(iperiod)+1-filestryr)),m1,m2),lat);PS(:,2)=PS(:,1);%no change in surface pressure
-clear hs1,tmpp;
+PS(:,1)=interp1(lat0,seasonlonavg(tmpp(:,:,12*(stryr(1)-filestryr)+1:12*(endyr(1)+1-filestryr)),m1,m2),lat);PS(:,2)=PS(:,1);%no change in surface pressure
+clear tmpp;
 
 fntsz=12;
 figure(2);plot(lat,SW(:,2)-SW(:,1),'LineWidth',3)
@@ -62,7 +61,6 @@ legend('his','ssp245','Location', 'Best','fontsize',fntsz);legend boxoff
 title("Planck feedback (W m^{-2} K^{-1})",'fontsize',fntsz);
 set(gca,'fontname','times');hold off
 figure(6);xlim([-90 90]);xlabel('latitude','fontsize',fntsz);
-legend(append(num2str(stryr(1)),'-',num2str(endyr(1))),append(num2str(stryr(2)),'-',num2str(endyr(2))),'Location', 'Best','fontsize',fntsz);legend boxoff
 legend('his','ssp245','Location', 'Best','fontsize',fntsz);legend boxoff
 title("Total feedback - Planck (W m^{-2} K^{-1})",'fontsize',fntsz);
 set(gca,'fontname','times');hold off
