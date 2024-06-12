@@ -15,7 +15,7 @@ else
     season=seasons(m1:m2);ssn=2;
 end
 ifdbk=2;%%% which period of feedbacks and forcing to use; 1 for hist; 2 for ssp245
-stryr=[1950,1970];endyr=[2014,2014];filestryr=1940;
+stryr=1950;endyr=2014;filestryr=1940;
 nperiod=2;
 SW1   =  ncread(append(dir,file2),"mtnswrf")-ncread(append(dir,file2),"msnswrf")-ncread(append(dir,file2),"msnlwrf")-ncread(append(dir,file2),"mslhf")-ncread(append(dir,file2),"msshf");
 Tr=ncread(append(dir,file1),"t2m");
@@ -23,8 +23,8 @@ etmp=WVPressure(ncread(append(dir,file2),"d2m"));
 hs1=etmp./WVPressure(Tr);
 ts_gcm_dhist=ts_gcm_dhist(2:end-1);ts_gcm_dssp245=ts_gcm_dssp245(2:end-1);
 smoothwndw=20;
-SW(:,1)=interp1(lat0,seasonlonavg(SW1(:,:,12*(stryr(1)-filestryr)+1:12*(endyr(1)+1-filestryr)),m1,m2),lat);
-hs(:,1)=interp1(lat0,seasonlonavg(hs1(:,:,12*(stryr(1)-filestryr)+1:12*(endyr(1)+1-filestryr)),m1,m2),lat);
+SW(:,1)=interp1(lat0,seasonlonavg(SW1(:,:,12*(stryr-filestryr)+1:12*(endyr+1-filestryr)),m1,m2),lat);
+hs(:,1)=interp1(lat0,seasonlonavg(hs1(:,:,12*(stryr-filestryr)+1:12*(endyr+1-filestryr)),m1,m2),lat);
 clear SW1,hs1
 hs(:,2)=hs(:,1);%%no change in relative humidity
 if ifdbk<2
@@ -36,7 +36,7 @@ else
 end
 To0(1)=areaavg_lat(ts_gcm_hist(2:end-1),lat,-91);To0(2)=To0(1);
 tmpp=ncread(append(dir,file2),"sp");
-PS(:,1)=interp1(lat0,seasonlonavg(tmpp(:,:,12*(stryr(1)-filestryr)+1:12*(endyr(1)+1-filestryr)),m1,m2),lat);PS(:,2)=PS(:,1);%no change in surface pressure
+PS(:,1)=interp1(lat0,seasonlonavg(tmpp(:,:,12*(stryr-filestryr)+1:12*(endyr+1-filestryr)),m1,m2),lat);PS(:,2)=PS(:,1);%no change in surface pressure
 clear tmpp;
 
 fntsz=12;
