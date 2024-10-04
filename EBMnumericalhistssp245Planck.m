@@ -22,7 +22,6 @@ Tr=ncread(append(dir,file1),"t2m");
 etmp=WVPressure(ncread(append(dir,file2),"d2m"));
 hs1=etmp./WVPressure(Tr);
 ts_gcm_dhist=ts_gcm_dhist(2:end-1);ts_gcm_dssp245=ts_gcm_dssp245(2:end-1);
-smoothwndw=20;
 SW(:,1)=interp1(lat0,seasonlonavg(SW1(:,:,12*(stryr-filestryr)+1:12*(endyr+1-filestryr)),m1,m2),lat);
 hs(:,1)=interp1(lat0,seasonlonavg(hs1(:,:,12*(stryr-filestryr)+1:12*(endyr+1-filestryr)),m1,m2),lat);
 clear SW1,hs1
@@ -49,7 +48,7 @@ Bp(:,1)=-Planckfeedback_hist(2:end-1);Bp(:,2)=-Planckfeedback_ssp245(2:end-1);
 %Bp(:,1)=areaavg_lat(Bp(:,1),lat,-91);Bp(:,2)=areaavg_lat(Bp(:,2),lat,-91);%%%No Planck feedback curvature
 tmp=Allfeedback_hist-Planckfeedback_hist;TotalF(:,1)=tmp(2:end-1);
 tmp=Allfeedback_ssp245-Planckfeedback_ssp245;TotalF(:,2)=tmp(2:end-1);
-removeF(:,1)=OHUfeedback_hist(2:end-1);removeF(:,2)=WLfeedback_ssp245(2:end-1);
+removeF(:,1)=OHUfeedback_hist(2:end-1);removeF(:,2)=OHUfeedback_ssp245(2:end-1);
 for iperiod =1:nperiod
     figure(5)
     plot(lat,-Bp(:,iperiod),'LineWidth',3);hold on
